@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+
+    firebird:
+        image: jacobalberty/firebird:v3.0.10
+        hostname: firebird
+        container_name: firebird
+        restart: always
+        ports:
+          - 3050:3050
+        environment:
+          - ISC_PASSWORD=masterkey
+          - FIREBIRD_DATABASE=delivery.fdb
+          - FIREBIRD_PASSWORD=masterkey
+          - TZ=America/Sao_Paulo
