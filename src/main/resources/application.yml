@@ -1,0 +1,9 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:firebirdsql://localhost:3050//firebird/data/delivery.fdb?encoding=UTF8
+    username: sysdba
+    password: masterkey
+    driver-class-name: org.firebirdsql.jdbc.FBDriver
