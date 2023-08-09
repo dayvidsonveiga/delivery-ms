@@ -5,6 +5,7 @@ import br.com.grupoacert.deliveryms.domain.Usuario;
 import br.com.grupoacert.deliveryms.dto.entrada.DtoUsuario;
 import br.com.grupoacert.deliveryms.dto.retorno.DtoRetornoUsuarioCriado;
 import br.com.grupoacert.deliveryms.dto.retorno.DtoRetornoUsuarioLogado;
+import br.com.grupoacert.deliveryms.exception.CadastroDuplicadoException;
 import br.com.grupoacert.deliveryms.exception.RegraDeNegocioException;
 import br.com.grupoacert.deliveryms.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +25,20 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final UsuarioRepository usuarioRepository;
     private final CargoService cargoService;
+    private final LogService logService;
 
     public DtoRetornoUsuarioCriado criar(DtoUsuario dto) throws RegraDeNegocioException {
 
+        log.info("Criando usuario...");
+
         checkEmailExist(dto.getEmail());
 
-        Usuario usuario = DtocriarUsuarioParaDomain(dto);
+        Usuario usuario = dtoUsuarioParaDomain(dto);
         Cargo cargo = cargoService.encontrarPeloNomeDoCargo("CARGO_ADM");
         cargo.getUsuarios().add(usuario);
         usuario.setCargo(cargo);
+
+        log.info("Usuario {} criado com sucesso", dto.getEmail());
 
         return domainParaDtoRetornoUsuarioCriado(usuarioRepository.save(usuario));
 
@@ -42,12 +48,11 @@ public class UsuarioService {
 
         Usuario usuario = findByEmail(dtoUsuario.getEmail());
 
-        DtoRetornoUsuarioLogado dtoRetorno = new DtoRetornoUsuarioLogado();
-        dtoRetorno.setId(usuario.getId());
-        dtoRetorno.setEmail(usuario.getEmail());
-        dtoRetorno.setToken(token);
-
-        return dtoRetorno;
+        return DtoRetornoUsuarioLogado.builder()
+                .id(usuario.getId())
+                .email(usuario.getEmail())
+                .token(token)
+                .build();
 
     }
 
@@ -89,29 +94,35 @@ public class UsuarioService {
 
     }
 
-    private void checkEmailExist(String email) throws RegraDeNegocioException {
+    private void checkEmailExist(String email) {
+        log.info("Verificando se email {} já existe na base", email);
+
         if (findByEmailOptional(email).isPresent()) {
-            throw new RegraDeNegocioException("Email já está sendo utilizado!");
+
+            String msg = "Email já está sendo utilizado!";
+            log.error(msg);
+            logService.salvar(msg);
+            throw new CadastroDuplicadoException(msg);
+
         }
+
     }
 
     private DtoRetornoUsuarioCriado domainParaDtoRetornoUsuarioCriado(Usuario usuario) {
 
-        DtoRetornoUsuarioCriado dtoRetorno = new DtoRetornoUsuarioCriado();
-        dtoRetorno.setId(usuario.getId());
-        dtoRetorno.setEmail(usuario.getEmail());
-
-        return dtoRetorno;
+        return DtoRetornoUsuarioCriado.builder()
+                .id(usuario.getId())
+                .email(usuario.getEmail())
+                .build();
 
     }
 
-    private Usuario DtocriarUsuarioParaDomain(DtoUsuario dto) {
+    private Usuario dtoUsuarioParaDomain(DtoUsuario dto) {
 
-        Usuario usuario = new Usuario();
-        usuario.setEmail(dto.getEmail());
-        usuario.setSenha(passwordEncoder.encode(dto.getPass()));
-
-        return usuario;
+        return Usuario.builder()
+                .email(dto.getEmail())
+                .senha(passwordEncoder.encode(dto.getPass()))
+                .build();
 
     }
 
