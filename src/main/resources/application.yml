@@ -7,3 +7,13 @@ spring:
     username: sysdba
     password: masterkey
     driver-class-name: org.firebirdsql.jdbc.FBDriver
+
+spring-doc:
+  swagger-ui:
+    path: /
+    tagsSorter: alpha
+    operationsSorter: method
+
+jwt:
+  expiration: 43200000
+  secret: delivery123
