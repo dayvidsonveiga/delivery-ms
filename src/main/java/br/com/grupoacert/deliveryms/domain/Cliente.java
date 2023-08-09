@@ -1,18 +1,16 @@
 package br.com.grupoacert.deliveryms.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Builder
 @Table(name = "clientes")
 public class Cliente {
 
@@ -25,8 +23,17 @@ public class Cliente {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "endereco")
-    private String endereco;
+    @Column(name = "cpf")
+    private String cpf;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "cep")
+    private String cep;
+
+    @Column(name = "complemento_endereco")
+    private String complementoEndereco;
 
 
 }
