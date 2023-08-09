@@ -29,20 +29,20 @@ public class UsuarioController {
 
 
     @Operation(summary = "Criar novo usuário")
-    @PostMapping("/criar")
-    public ResponseEntity<DtoRetornoUsuarioCriado> create(@RequestBody @Valid DtoUsuario dtoUsuario) throws RegraDeNegocioException {
+    @PostMapping("v1/usuario/criar")
+    public ResponseEntity<DtoRetornoUsuarioCriado> criar(@RequestBody @Valid DtoUsuario dtoUsuario) throws RegraDeNegocioException {
         return new ResponseEntity<>(usuarioService.criar(dtoUsuario), HttpStatus.OK);
     }
 
     @Operation(summary = "Logar no sistema")
-    @PostMapping("/login")
+    @PostMapping("v1/usuario/login")
     public ResponseEntity<DtoRetornoUsuarioLogado> login(@RequestBody @Valid DtoUsuario dtoUsuario) throws RegraDeNegocioException {
         return new ResponseEntity<>(loginService.login(dtoUsuario), HttpStatus.OK);
     }
 
     @Operation(summary = "Listar todos os usuários cadastrados")
-    @GetMapping("/listar")
-    public ResponseEntity<List<DtoRetornoUsuarioCriado>> listAll() throws RegraDeNegocioException {
+    @GetMapping("v1/usuario/listar")
+    public ResponseEntity<List<DtoRetornoUsuarioCriado>> listarUsuarios() throws RegraDeNegocioException {
         return new ResponseEntity<>(usuarioService.listarUsuarios(), HttpStatus.OK);
     }
 
