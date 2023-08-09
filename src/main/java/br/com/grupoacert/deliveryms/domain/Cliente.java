@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Cliente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_sequence_cliente")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "id_sequence_cliente")
     @SequenceGenerator(name = "id_sequence_cliente", sequenceName = "ID_SEQ_CLIENTE")
     @Column(name = "id")
     private Long id;

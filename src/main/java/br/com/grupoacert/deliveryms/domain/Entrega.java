@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Entrega {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_sequence_entrega")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "id_sequence_entrega")
     @SequenceGenerator(name = "id_sequence_entrega", sequenceName = "ID_SEQ_ENTREGA")
     @Column(name = "id")
     private Long id;
