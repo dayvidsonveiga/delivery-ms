@@ -10,7 +10,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolationException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,11 +24,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                                                                   HttpHeaders headers,
                                                                   HttpStatus status,
                                                                   WebRequest request) {
+
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());
         body.put("status", status.value());
 
-        //Get all errors
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -39,26 +38,43 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         body.put("errors", errors);
 
         return new ResponseEntity<>(body, headers, status);
+
+    }
+
+    @ExceptionHandler(CadastroDuplicadoException.class)
+    public ResponseEntity<Object> handleException(CadastroDuplicadoException exception,
+                                                  HttpServletRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", new Date());
+        body.put("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
+        body.put("message", exception.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+
     }
 
     @ExceptionHandler(RegraDeNegocioException.class)
     public ResponseEntity<Object> handleException(RegraDeNegocioException exception,
                                                   HttpServletRequest request) {
+
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
         body.put("message", exception.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handleException(ConstraintViolationException exception,
+    @ExceptionHandler(CadastroNaoEncontradoException.class)
+    public ResponseEntity<Object> handleException(CadastroNaoEncontradoException exception,
                                                   HttpServletRequest request) {
+
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("status", HttpStatus.NOT_FOUND.value());
         body.put("message", exception.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+
     }
 
 }
