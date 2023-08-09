@@ -3,6 +3,7 @@ package br.com.grupoacert.deliveryms.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,8 +19,8 @@ import java.util.Set;
 public class Usuario implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "id_sequence_usuario")
-    @SequenceGenerator(name = "id_sequence_usuario", sequenceName = "ID_SEQ_USUARIO")
+    @GeneratedValue(generator = "inc")
+    @GenericGenerator(name = "inc", strategy = "increment")
     @Column(name = "id")
     private Long id;
 

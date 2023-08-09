@@ -3,6 +3,7 @@ package br.com.grupoacert.deliveryms.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -16,8 +17,8 @@ import java.util.Set;
 public class Cargo implements GrantedAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "id_sequence_cargo")
-    @SequenceGenerator(name = "id_sequence_cargo", sequenceName = "ID_SEQ_CARGO")
+    @GeneratedValue(generator = "inc")
+    @GenericGenerator(name = "inc", strategy = "increment")
     @Column(name = "id")
     private Long id;
 

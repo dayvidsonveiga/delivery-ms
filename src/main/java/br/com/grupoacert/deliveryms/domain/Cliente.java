@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -16,8 +17,8 @@ import javax.persistence.*;
 public class Cliente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "id_sequence_cliente")
-    @SequenceGenerator(name = "id_sequence_cliente", sequenceName = "ID_SEQ_CLIENTE")
+    @GeneratedValue(generator = "inc")
+    @GenericGenerator(name = "inc", strategy = "increment")
     @Column(name = "id")
     private Long id;
 
