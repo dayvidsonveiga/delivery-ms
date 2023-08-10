@@ -2,6 +2,8 @@ package br.com.grupoacert.deliveryms.service;
 
 import br.com.grupoacert.deliveryms.domain.Cliente;
 import br.com.grupoacert.deliveryms.dto.entrada.DtoCliente;
+import br.com.grupoacert.deliveryms.dto.entrada.DtoClienteAtualizar;
+import br.com.grupoacert.deliveryms.dto.entrada.DtoClienteCpf;
 import br.com.grupoacert.deliveryms.dto.retorno.DtoRetornoClienteCriado;
 import br.com.grupoacert.deliveryms.exception.CadastroDuplicadoException;
 import br.com.grupoacert.deliveryms.exception.CadastroNaoEncontradoException;
@@ -11,6 +13,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +36,75 @@ public class ClienteService {
         log.info("Cliente {} criado com sucesso", dtoCliente.getNome());
 
         return domainParaDtoRetornoClienteCriado(salvar(cliente));
+
+    }
+
+    public DtoRetornoClienteCriado atualizar(Long id, DtoClienteAtualizar dtoCliente) {
+
+        log.info("Buscando cliente com id {}", id);
+
+        Cliente cliente = encontrarPeloId(id);
+
+        cliente.setNome(Objects.nonNull(dtoCliente.getNome()) ? dtoCliente.getNome() : cliente.getNome());
+        cliente.setCpf(Objects.nonNull(dtoCliente.getCpf()) ? dtoCliente.getCpf() : cliente.getCpf());
+        cliente.setEmail(Objects.nonNull(dtoCliente.getEmail()) ? dtoCliente.getEmail() : cliente.getEmail());
+        cliente.setCep(Objects.nonNull(dtoCliente.getCep()) ? dtoCliente.getCpf() : cliente.getCep());
+
+        log.info("Cliente com id {} atualizado", id);
+
+        return domainParaDtoRetornoClienteCriado(salvar(cliente));
+
+    }
+
+    public Long deletar(Long id) {
+
+        Cliente cliente = encontrarPeloId(id);
+
+        clienteRepository.delete(cliente);
+
+        return id;
+
+    }
+
+    public DtoRetornoClienteCriado encontrarPeloCpf(DtoClienteCpf dtoClienteCpf) {
+
+        log.info("Procurando cliente pelo cpf {} ", dtoClienteCpf.getCpf());
+
+        Optional<Cliente> cliente = clienteRepository.findByCpfEqualsIgnoreCase(dtoClienteCpf.getCpf());
+
+        if (!cliente.isPresent()) {
+
+            String msg = "Não há cliente cadastrado com esse cpf";
+            logService.salvar(msg);
+            log.error(msg);
+            throw new CadastroNaoEncontradoException(msg);
+
+        }
+
+        log.info("Cliente {} listado", cliente.get().getNome());
+
+        return domainParaDtoRetornoClienteCriado(cliente.get());
+
+    }
+
+    public Cliente encontrarPeloId(Long id) {
+
+        log.info("Procurando cliente pelo cpf {} ", id);
+
+        Optional<Cliente> cliente = clienteRepository.findById(id);
+
+        if (!cliente.isPresent()) {
+
+            String msg = "Não há cliente cadastrado com esse id";
+            logService.salvar(msg);
+            log.error(msg);
+            throw new CadastroNaoEncontradoException(msg);
+
+        }
+
+        log.info("Cliente {} listado", cliente.get().getNome());
+
+        return cliente.get();
 
     }
 
@@ -96,6 +169,5 @@ public class ClienteService {
                 .build();
 
     }
-
 
 }

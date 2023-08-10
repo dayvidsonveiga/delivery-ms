@@ -10,12 +10,12 @@ import javax.validation.constraints.Size;
 @Data
 public class DtoUsuario {
 
-    @Schema(example = "nome@gmail.com")
+    @Schema(description = "Email do usuario cadastrado", example = "nome@gmail.com", required = true)
     @NotBlank(message = "O campo de email não pode ser vazio/nulo.")
     @Email(message = "Deve ser informado um e-mail válido.")
     private String email;
 
-    @Schema(example = "12345")
+    @Schema(description = "Senha do usuario cadastrado", example = "12345", required = true)
     @NotBlank(message = "O campo de password não pode ser vazio/nulo.")
     @Size(min = 5, max = 20)
     private String pass;
