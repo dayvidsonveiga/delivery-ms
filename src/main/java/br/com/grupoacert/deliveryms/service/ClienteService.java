@@ -58,9 +58,13 @@ public class ClienteService {
 
     public Long deletar(Long id) {
 
+        log.info("Buscando cliente...");
+
         Cliente cliente = encontrarPeloId(id);
 
         clienteRepository.delete(cliente);
+
+        log.info("Cliente {} deletado", cliente.getNome());
 
         return id;
 
@@ -89,7 +93,7 @@ public class ClienteService {
 
     public Cliente encontrarPeloId(Long id) {
 
-        log.info("Procurando cliente pelo cpf {} ", id);
+        log.info("Procurando cliente pelo id {} ", id);
 
         Optional<Cliente> cliente = clienteRepository.findById(id);
 
@@ -133,6 +137,18 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
+    public DtoRetornoClienteCriado domainParaDtoRetornoClienteCriado(Cliente cliente) {
+
+        return DtoRetornoClienteCriado.builder()
+                .id(cliente.getId())
+                .nome(cliente.getNome())
+                .cpf(cliente.getCpf())
+                .email(cliente.getEmail())
+                .cep(cliente.getCep())
+                .build();
+
+    }
+
     private void verificarSeClienteJaCadastrado(DtoCliente dtoCliente) {
 
         log.info("Verificando se {} já esta cadastrado...", dtoCliente.getCpf());
@@ -144,18 +160,6 @@ public class ClienteService {
                     logService.salvar(msg);
                     throw new CadastroDuplicadoException(msg);
                 });
-
-    }
-
-    private DtoRetornoClienteCriado domainParaDtoRetornoClienteCriado(Cliente cliente) {
-
-        return DtoRetornoClienteCriado.builder()
-                .id(cliente.getId())
-                .nome(cliente.getNome())
-                .cpf(cliente.getCpf())
-                .email(cliente.getEmail())
-                .cep(cliente.getCep())
-                .build();
 
     }
 
