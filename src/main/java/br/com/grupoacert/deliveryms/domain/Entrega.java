@@ -25,6 +25,10 @@ public class Entrega {
     private Long id;
 
     @NotNull
+    @Column(name = "nome_entregador")
+    private String nomeEntregador;
+
+    @NotNull
     @Column(name = "data_entrega")
     private LocalDateTime dataEntrega;
 

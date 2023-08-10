@@ -119,7 +119,7 @@ public class PedidoService {
         return pedidoRepository.save(pedido);
     }
 
-    private DtoRetornoPedidoCriado domainParaDtoRetornoPedidoCriado(Pedido pedido) {
+    public DtoRetornoPedidoCriado domainParaDtoRetornoPedidoCriado(Pedido pedido) {
 
         return DtoRetornoPedidoCriado.builder()
                 .id(pedido.getId())
