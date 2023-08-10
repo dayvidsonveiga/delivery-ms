@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -20,9 +21,11 @@ public class Pedido {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @Column(name = "descricao")
     private String descricao;
 
+    @NotNull
     @Column(name = "valor")
     private Double valor;
 

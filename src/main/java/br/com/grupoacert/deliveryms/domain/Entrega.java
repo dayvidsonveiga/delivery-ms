@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,6 +22,7 @@ public class Entrega {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @Column(name = "data_entrega")
     private LocalDateTime dataEntrega;
 

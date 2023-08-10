@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ public class Cargo implements GrantedAuthority {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @Column(name = "nome_cargo")
     private String nomeCargo;
 
