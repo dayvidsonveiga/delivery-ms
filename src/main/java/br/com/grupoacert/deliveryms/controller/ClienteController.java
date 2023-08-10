@@ -48,7 +48,7 @@ public class ClienteController {
     }
 
     @Operation(summary = "Deletar cliente pelo id")
-    @PatchMapping("v1/cliente/deletar/{id}")
+    @DeleteMapping("v1/cliente/deletar/{id}")
     public ResponseEntity<Long> deletar(@PathVariable Long id) {
         return new ResponseEntity<>(clienteService.deletar(id), HttpStatus.OK);
     }
