@@ -5,6 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -36,5 +38,8 @@ public class Cliente {
     @NotNull
     @Column(name = "cep")
     private String cep;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Pedido> pedidos = new HashSet<>();
 
 }

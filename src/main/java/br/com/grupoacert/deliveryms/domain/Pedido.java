@@ -33,4 +33,8 @@ public class Pedido {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    @ManyToOne
+    @JoinColumn(name = "entrega_id")
+    private Entrega entrega;
+
 }

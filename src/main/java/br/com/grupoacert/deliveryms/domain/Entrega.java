@@ -6,6 +6,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,8 +28,7 @@ public class Entrega {
     @Column(name = "data_entrega")
     private LocalDateTime dataEntrega;
 
-    @ManyToOne
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "entrega", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Pedido> pedidos = new HashSet<>();
 
 }

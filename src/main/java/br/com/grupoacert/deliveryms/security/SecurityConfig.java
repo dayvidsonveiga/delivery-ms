@@ -30,6 +30,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authz) ->
                         authz.antMatchers("/", "/v1/usuario/**").permitAll()
                                 .antMatchers("v1/cliente/**").authenticated()
+                                .antMatchers("v1/pedido/**").authenticated()
+                                .antMatchers("v1/entrega/**").authenticated()
                                 .anyRequest()
                                 .authenticated()
                 );
