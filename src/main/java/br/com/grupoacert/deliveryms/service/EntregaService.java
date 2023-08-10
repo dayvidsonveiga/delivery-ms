@@ -12,9 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -140,7 +138,13 @@ public class EntregaService {
                 .dataEntrega(LocalDateTime.now())
                 .build();
 
-        entrega.getPedidos().add(pedido);
+        if (Objects.isNull(entrega.getPedidos())) {
+            Set<Pedido> pedidos = new HashSet<>();
+            pedidos.add(pedido);
+            entrega.setPedidos(pedidos);
+        } else {
+            entrega.getPedidos().add(pedido);
+        }
 
         return entrega;
 
