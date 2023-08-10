@@ -35,7 +35,6 @@ public class UsuarioService {
 
         Usuario usuario = dtoUsuarioParaDomain(dto);
         Cargo cargo = cargoService.encontrarPeloNomeDoCargo("CARGO_ADM");
-        cargo.getUsuarios().add(usuario);
         usuario.setCargo(cargo);
 
         log.info("Usuario {} criado com sucesso", dto.getEmail());
