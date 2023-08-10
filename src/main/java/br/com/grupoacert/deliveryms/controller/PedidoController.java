@@ -1,5 +1,6 @@
 package br.com.grupoacert.deliveryms.controller;
 
+import br.com.grupoacert.deliveryms.contract.PedidoContract;
 import br.com.grupoacert.deliveryms.dto.entrada.DtoPedido;
 import br.com.grupoacert.deliveryms.dto.entrada.DtoPedidoAtualizar;
 import br.com.grupoacert.deliveryms.dto.retorno.DtoRetornoPedidoCriado;
@@ -17,7 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Validated
-public class PedidoController {
+public class PedidoController implements PedidoContract {
 
     private final PedidoService pedidoService;
 
